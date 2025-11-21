@@ -56,18 +56,18 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    45,5%
+    63,6%
   </span>
   <span class="absValue">
-    (5/11)
+    (7/11)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    75%
+    41,7%
   </span>
   <span class="absValue">
-    (9/12)
+    (5/12)
   </span>
 </td>
 <td class="coverageStat">
@@ -144,10 +144,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    @Override
 &nbsp;    public boolean equals(Object otherPosition) {
 <b class="pc">&nbsp;        if (this == otherPosition)</b>
-<b class="nc">&nbsp;            return true;</b>
-<b class="pc">&nbsp;        if (otherPosition instanceof IPosition) {</b>
-<b class="fc">&nbsp;            IPosition other = (IPosition) otherPosition;</b>
-<b class="pc">&nbsp;            return (this.getRow() == other.getRow() &amp;&amp; this.getColumn() == other.getColumn());</b>
+<b class="fc">&nbsp;            return true;</b>
+<b class="nc">&nbsp;        if (otherPosition instanceof IPosition) {</b>
+<b class="nc">&nbsp;            IPosition other = (IPosition) otherPosition;</b>
+<b class="nc">&nbsp;            return (this.getRow() == other.getRow() &amp;&amp; this.getColumn() == other.getColumn());</b>
 &nbsp;        } else {
 <b class="nc">&nbsp;            return false;</b>
 &nbsp;        }
@@ -180,7 +180,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     */
 &nbsp;    @Override
 &nbsp;    public void shoot() {
-<b class="nc">&nbsp;        isHit = true;</b>
+<b class="fc">&nbsp;        isHit = true;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /*
@@ -200,7 +200,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     */
 &nbsp;    @Override
 &nbsp;    public boolean isHit() {
-<b class="nc">&nbsp;        return isHit;</b>
+<b class="fc">&nbsp;        return isHit;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    @Override
@@ -232,7 +232,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2025-11-21 22:10</div>
+    <div style="float:right;">generated on 2025-11-21 23:17</div>
 </div>
 </body>
 </html>
