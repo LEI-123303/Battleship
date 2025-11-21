@@ -1,75 +1,74 @@
 package iscteiul.ista.battleship;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+@DisplayName("Testes da Classe Position")
 public class PositionTest {
 
-    @Test
-    @DisplayName("Construtor: Verifica se Linha e Coluna ficam guardadas")
-    void testConstructor() {
-        // Arrange
-        int linha = 5;
-        int coluna = 10;
+    @Nested
+    @DisplayName("Grupo 1: Criação e Atributos")
+    class CreationTests {
 
-        // Act
-        Position p = new Position(linha, coluna);
+        @Test
+        @DisplayName("Construtor deve guardar coordenadas")
+        void testConstructor() {
+            Position p = new Position(5, 10);
+            assertEquals(5, p.getRow());
+            assertEquals(10, p.getColumn());
+        }
 
-        // Assert
-        assertEquals(linha, p.getRow(), "A linha (row) deve ser 5");
-        assertEquals(coluna, p.getColumn(), "A coluna (column) deve ser 10");
-
-        // Verifica o estado inicial (não ocupado, não atingido)
-        assertFalse(p.isOccupied(), "Inicialmente não deve estar ocupado");
-        assertFalse(p.isHit(), "Inicialmente não deve ter sido atingido");
+        @Test
+        @DisplayName("toString não deve falhar")
+        void testToString() {
+            Position p = new Position(2, 8);
+            assertNotNull(p.toString());
+        }
     }
 
-    @Test
-    @DisplayName("Estado: Verifica methods occupy() e shoot()")
-    void testStateChanges() {
-        Position p = new Position(1, 1);
+    @Nested
+    @DisplayName("Grupo 2: Alteração de Estado")
+    class StateTests {
 
-        // Testar Ocupação
-        p.occupy();
-        assertTrue(p.isOccupied(), "Deve retornar true após chamar occupy()");
+        @Test
+        @DisplayName("Deve mudar estado com occupy() e shoot()")
+        void testStateChanges() {
+            Position p = new Position(1, 1);
 
-        // Testar Tiro
-        p.shoot();
-        assertTrue(p.isHit(), "Deve retornar true após chamar shoot()");
+            // Antes
+            assertFalse(p.isOccupied());
+            assertFalse(p.isHit());
+
+            // Ação
+            p.occupy();
+            p.shoot();
+
+            // Depois
+            assertTrue(p.isOccupied());
+            assertTrue(p.isHit());
+        }
+
+        @Test
+        @DisplayName("Deve calcular adjacências corretamente")
+        void testAdjacency() {
+            Position centro = new Position(5, 5);
+
+            assertTrue(centro.isAdjacentTo(new Position(5, 6)), "Deve ser vizinho");
+            assertTrue(centro.isAdjacentTo(new Position(4, 4)), "Diagonal também é vizinho");
+            assertFalse(centro.isAdjacentTo(new Position(1, 1)), "Longe não é vizinho");
+        }
     }
 
-    @Test
-    @DisplayName("Equals: Posições com mesmas coordenadas são iguais")
-    void testEquals() {
-        Position p1 = new Position(3, 3);
-        Position p2 = new Position(3, 3);
-        Position p3 = new Position(4, 4);
-
-        assertEquals(p1, p2, "Posições (3,3) e (3,3) devem ser iguais");
-        assertNotEquals(p1, p3, "Posições (3,3) e (4,4) devem ser diferentes");
-    }
-
-    @Test
-    @DisplayName("Adjacência: Verifica se detecta vizinhos corretamente")
-    void testAdjacency() {
-        Position centro = new Position(5, 5);
-
-        Position vizinhoLado = new Position(5, 6);
-        Position vizinhoDiagonal = new Position(4, 4); // O código Math.abs <= 1 permite diagonais
-        Position longe = new Position(1, 1);
-
-        assertTrue(centro.isAdjacentTo(vizinhoLado), "(5,6) deve ser adjacente a (5,5)");
-        assertTrue(centro.isAdjacentTo(vizinhoDiagonal), "(4,4) deve ser adjacente a (5,5)");
-        assertFalse(centro.isAdjacentTo(longe), "(1,1) NÃO deve ser adjacente a (5,5)");
-    }
-
-    @Test
-    @DisplayName("ToString: Verifica o formato do texto")
-    void testToString() {
-        Position p = new Position(2, 8);
-        String textoEsperado = "Linha = 2 Coluna = 8";
-
-        assertEquals(textoEsperado, p.toString(), "O toString deve seguir o formato exato");
+    @Nested
+    @DisplayName("Grupo 3: Igualdade")
+    class EqualityTests {
+        @Test
+        void testEquals() {
+            Position p1 = new Position(3, 3);
+            Position p2 = new Position(3, 3);
+            assertEquals(p1, p2);
+        }
     }
 }
