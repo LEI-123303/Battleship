@@ -2,9 +2,7 @@ package iscteiul.ista.battleship;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -44,16 +42,28 @@ public class FleetTest {
     }
 
     @Test
-    @DisplayName("Adicionar navios até atingir o limite da frota (10) deve falhar o 11º")
+    @DisplayName("Deve respeitar o limite da frota (Máximo 10)")
     void testAddShipsLimit() {
-        // CORREÇÃO: Usar coordenadas seguras (0, 0) a (0, 9) que não colidem e estão dentro.
-        for (int i = 0; i < IFleet.FLEET_SIZE; i++) {
-            assertTrue(fleet.addShip(createTestBarge(0, i)), "O barco " + (i + 1) + " deve ser adicionado.");
+        int count = 0;
+        // Estratégia: Adicionar barcos espaçados (ex: 0,0; 0,2; 0,4...)
+        // para não violar a regra de 'tooCloseTo'
+        for (int row = 0; row < 10; row += 2) {
+            for (int col = 0; col < 10; col += 2) {
+                if (count < Fleet.FLEET_SIZE) {
+                    boolean added = fleet.addShip(new Barge(Compass.NORTH, new Position(row, col)));
+                    assertTrue(added, "O barco " + (count + 1) + " deveria ter sido adicionado");
+                    count++;
+                }
+            }
         }
 
-        // Tenta adicionar o 11º
-        assertFalse(fleet.addShip(createTestBarge(9, 9)), "O 11º barco deve falhar a adição (limite excedido).");
-        assertEquals(IFleet.FLEET_SIZE.intValue(), fleet.getShips().size(), "A frota deve ter exatamente 10 navios.");
+        // Verificar que temos 10 navios
+        assertEquals(10, fleet.getShips().size());
+
+        // Tentar adicionar o 11º navio (deve falhar)
+        // Posição (9,9) está livre de colisões neste esquema, por isso serve para testar o limite
+        boolean extraShip = fleet.addShip(new Barge(Compass.NORTH, new Position(9, 9)));
+        assertFalse(extraShip, "Não deve ser possível adicionar mais do que 10 navios");
     }
 
     @Test
